@@ -1,13 +1,5 @@
 var fs = require("fs");
 require("dotenv").config();
-//fs.readFile("random.txt", "utf8", function(error, dataRandom) {
-//    if (error) {
-//      return console.log(error);
-//    }
-//    return dataArr = dataRandom.split(",");
-    //return console.log(dataRandom);
-//});
-//console.log("Data from random.txt: "+dataArr);
 var moment = require('moment');
 var request = require("request");
 var axios = require("axios");
@@ -15,6 +7,11 @@ var dataInput = "";
 var key =require("./keys.js");
 
 
+
+fs.readFile("random.txt", "utf8", function(error, dataRandom) {
+    if (error) {
+      return console.log(error);
+    }
 //Input text
 
 var task = process.argv[2];
@@ -22,29 +19,14 @@ var dataInput = process.argv[3];
 for (i=4; i<process.argv.length; i++) {
     var dataInput = dataInput + " " +process.argv[i];
     }
-//console.log("Arg 2: "+ task);
-//console.log("Arg 3: "+dataInput);
 
 if (task == "do-what-it-says") {
     console.log("DO WHAT IT SAYS");
-    fs.readFile("random.txt", "utf8", function(error, dataRandom) {
-        if (error) {
-          return console.log(error);
-        }
-    
     dataArr = dataRandom.split(",");
     task = dataArr[0].trim();
     dataInput = dataArr[1].trim(); 
-    console.log("Do what: "+ task);
-    console.log("With what data: " + dataInput );
-    if (task === "spotify-this-song") {console.log("Spotify True")};
-    if (task === "concert-this") {console.log("Concert True")};
-    if (task === "movie-this") {console.log("Movie True")};
-
-    });
     
 }
-console.log("Task is: "+task);
 if (task === "concert-this") {
     console.log("CONCERT THIS");
     console.log(" ");
@@ -100,7 +82,6 @@ else if (task === "movie-this") {
     request("https://omdbapi.com/?t=" + dataInput + "&y=&plot=short&apikey=trilogy",function(error, response, body) {
         if (!error && response.statusCode === 200) {
 
-            //console.log(JSON.parse(response.body));
             if (JSON.parse(response.body).Title == null) {
                 console.log("**** Movie not Found ****");
             }
@@ -125,3 +106,11 @@ else if (task === "movie-this") {
 else {
     console.log("**** Invalid Request ****")
 }
+var addToLog = task+" - "+dataInput+", ";
+fs.appendFile("log.txt", addToLog, function(err) {
+    if(err) {
+        console.log (err);
+    }
+});
+
+});
