@@ -1,6 +1,13 @@
 var fs = require("fs");
 require("dotenv").config();
-
+//fs.readFile("random.txt", "utf8", function(error, dataRandom) {
+//    if (error) {
+//      return console.log(error);
+//    }
+//    return dataArr = dataRandom.split(",");
+    //return console.log(dataRandom);
+//});
+//console.log("Data from random.txt: "+dataArr);
 var moment = require('moment');
 var request = require("request");
 var axios = require("axios");
@@ -15,8 +22,8 @@ var dataInput = process.argv[3];
 for (i=4; i<process.argv.length; i++) {
     var dataInput = dataInput + " " +process.argv[i];
     }
-console.log("Arg 2: "+ task);
-console.log("Arg 3: "+dataInput);
+//console.log("Arg 2: "+ task);
+//console.log("Arg 3: "+dataInput);
 
 if (task == "do-what-it-says") {
     console.log("DO WHAT IT SAYS");
@@ -30,9 +37,14 @@ if (task == "do-what-it-says") {
     dataInput = dataArr[1].trim(); 
     console.log("Do what: "+ task);
     console.log("With what data: " + dataInput );
-    });
-}
+    if (task === "spotify-this-song") {console.log("Spotify True")};
+    if (task === "concert-this") {console.log("Concert True")};
+    if (task === "movie-this") {console.log("Movie True")};
 
+    });
+    
+}
+console.log("Task is: "+task);
 if (task === "concert-this") {
     console.log("CONCERT THIS");
     console.log(" ");
@@ -40,8 +52,6 @@ if (task === "concert-this") {
         var dataInput = "Fleetwood Mac";
     }
         axios.get("https://rest.bandsintown.com/artists/"+dataInput+"/events?app_id=codingbootcamp").then(function(response) {
-        //console.log (response.data.length);
-        //console.log (response.data);
         console.log(response.data.length+" Upcomming concerts for: "+dataInput);
         console.log(" ");
         for (i=0; i<response.data.length; i++) {
@@ -96,7 +106,7 @@ else if (task === "movie-this") {
             }
             else {
                 console.log("Movie Title: "+JSON.parse(response.body).Title);
-                console.log("Year movie came out: "+JSON.parse(response.body).Year);
+                console.log("Movie released in: "+JSON.parse(response.body).Year);
                 console.log("IMDB Rating: "+JSON.parse(response.body).Ratings[0].Value);
                 if (JSON.parse(response.body).Ratings[1] == null) {
                     console.log("**** No Rotten Tomatoes Rating ****");
